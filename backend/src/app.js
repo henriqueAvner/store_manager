@@ -1,7 +1,6 @@
 const express = require('express');
 
-const { productsServices, salesServices } = require('./services');
-const httpMapCode = require('./utils/httpCodeMapper');
+const { productsController, salesController } = require('./controllers');
 
 const app = express();
 
@@ -12,27 +11,12 @@ app.get('/', (_request, response) => {
   response.json({ status: 'Store Manager UP!' });
 });
 
-app.get('/products', async (_req, res) => {
-  const allProducts = await productsServices.findAllProducts();
-  return res.status(200).json(allProducts);
-});
+app.get('/products', productsController.getAllProducts);
 
-app.get('/products/:id', async (req, res) => {
-  const { id } = req.params;
-  const { status, data } = await productsServices.findProductById(id);
-  return res.status(httpMapCode[status]).json(data);
-});
+app.get('/products/:id', productsController.getProductsById);
 
-app.get('/sales', async (_req, res) => {
-  const allSales = await salesServices.findSalles();
-  return res.status(200).json(allSales);
-});
+app.get('/sales', salesController.getAllSales);
 
-app.get('/sales/:id', async (req, res) => {
-  const { id } = req.params;
-  const { status, data } = await salesServices.findSaleById(id);
-
-  return res.status(httpMapCode[status]).json(data);
-});
+app.get('/sales/:id', salesController.getSalesById);
 
 module.exports = app;

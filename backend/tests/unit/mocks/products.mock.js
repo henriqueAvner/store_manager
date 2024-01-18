@@ -15,8 +15,20 @@ const mockCurrProduct = {
   name: 'Martelo de Thor',
 };
 
+const controllerMock = { 
+  status: 'SUCCESS', 
+  data: mockProducts,
+};
+
+const controllerMockId = {
+  status: 'SUCCESS',
+  data: mockCurrProduct,
+};
+
 module.exports = {
   mockProducts,
   mockCurrProduct,
+  controllerMock,
+  controllerMockId,
 
 };

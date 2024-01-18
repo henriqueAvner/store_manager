@@ -7,7 +7,7 @@ const {
 } = require('../mocks/sales.mock');
 const { salesModel } = require('../../../src/models');
 
-describe('Realizando testes - SALES MODEL:', function () {
+describe(' Unit test  - SALES MODEL:', function () {
   it('Retornando todos os produtos', async function () {
     sinon.stub(connection, 'execute').resolves([mockSales]);
 
