@@ -2,7 +2,7 @@ const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 const { expect } = require('chai');
 const chai = require('chai');
-const { controllerMock, controllerMockId, mockCurrProduct } = require('../mocks/products.mock');
+const { controllerMock, controllerMockId, mockCurrProduct, newProductMock, controllerNewProduct } = require('../mocks/products.mock');
 const { productsController } = require('../../../src/controllers');
 const { productsServices } = require('../../../src/services');
 
@@ -48,6 +48,21 @@ describe('Unit test - PRODUCTS CONTROLLER:', function () {
     // Assert
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith(mockCurrProduct);
+  });
+  it('Adicionando novo produto baseado no nome', async function () {
+    sinon.stub(productsServices, 'insertNewProduct').resolves(controllerNewProduct);
+    const req = { body: { name: 'Manopla do infinito' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    // Act
+    await productsController.addNewProduct(req, res);
+    // Assert
+
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith(newProductMock);
   });
   afterEach(function () {
     sinon.restore();

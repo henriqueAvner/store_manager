@@ -3,7 +3,10 @@ const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
 const {
   mockProducts, 
-  mockCurrProduct, 
+  mockCurrProduct,
+  newProductMock,
+  
+  mockInsert,
 } = require('../mocks/products.mock');
 const { productsModel } = require('../../../src/models');
 
@@ -26,7 +29,16 @@ describe('Unit test - PRODUCTS MODEL:', function () {
     expect(currProduct).to.be.an('object');
     expect(currProduct).to.be.deep.equal(mockCurrProduct);
   });
-  
+ 
+  it('Adicionando um novo produto', async function () {
+    sinon.stub(connection, 'execute').resolves([mockInsert]);
+
+    const name = 'Manopla do infinito';
+    const newProduct = await productsModel.insertProduct(name);
+
+    expect(newProduct).to.be.an('object');
+    expect(newProduct).to.deep.equal(newProductMock);
+  });
   afterEach(function () {
     sinon.restore();
   });

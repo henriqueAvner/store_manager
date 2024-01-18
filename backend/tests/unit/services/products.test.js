@@ -3,9 +3,10 @@ const sinon = require('sinon');
 const { productsModel } = require('../../../src/models');
 const { productsServices } = require('../../../src/services');
 const { mockProducts,
-  mockCurrProduct } = require('../mocks/products.mock');
+  mockCurrProduct, 
+  newProductMock } = require('../mocks/products.mock');
 
-describe('Unit tests - SERVICE PRODUCTS', function () {
+describe('Unit tests - SERVICE PRODUCTS:', function () {
   it('Retornando todos os produtos da lista', async function () {
     sinon.stub(productsModel, 'findAllProducts').resolves(mockProducts);
 
@@ -38,6 +39,20 @@ describe('Unit tests - SERVICE PRODUCTS', function () {
     expect(responseService.status).to.equal('SUCCESS');
     expect(responseService).to.be.an('object');
     expect(responseService.data).to.deep.equal(responseData);
+  });
+  it('Adicionando um novo produto na lista', async function () {
+    sinon.stub(productsModel, 'insertProduct').resolves(newProductMock);
+
+    const responseNewData = {
+      id: 4,
+      name: 'Manopla do infinito',
+    };
+
+    const responseService = await productsServices.insertNewProduct(responseNewData);
+
+    expect(responseService.status).to.equal('CREATED');
+    expect(responseService).to.be.an('object');
+    expect(responseService.data).to.deep.equal(responseNewData);
   });
 
   afterEach(function () {
