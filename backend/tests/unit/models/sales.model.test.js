@@ -4,7 +4,7 @@ const connection = require('../../../src/models/connection');
 const {
   mockSales,
   
-} = require('../mocks/model.mock');
+} = require('../mocks/sales.mock');
 const { salesModel } = require('../../../src/models');
 
 describe('Realizando testes - SALES MODEL:', function () {

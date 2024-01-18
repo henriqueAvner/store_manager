@@ -1,6 +1,7 @@
 const express = require('express');
-const { salesModel } = require('./models');
-const { productsServices } = require('./services');
+
+const { productsServices, salesServices } = require('./services');
+const httpMapCode = require('./utils/httpCodeMapper');
 
 const app = express();
 
@@ -18,24 +19,20 @@ app.get('/products', async (_req, res) => {
 
 app.get('/products/:id', async (req, res) => {
   const { id } = req.params;
-  const currProduct = await productsServices.findProductById(id);
-  return res.status(200).json(currProduct);
+  const { status, data } = await productsServices.findProductById(id);
+  return res.status(httpMapCode[status]).json(data);
 });
 
 app.get('/sales', async (_req, res) => {
-  const allSales = await salesModel.findAllSales();
+  const allSales = await salesServices.findSalles();
   return res.status(200).json(allSales);
 });
 
 app.get('/sales/:id', async (req, res) => {
   const { id } = req.params;
+  const { status, data } = await salesServices.findSaleById(id);
 
-  const filterSales = await salesModel.findSaleById(id);
-  
-  if (filterSales.length < 1) {
-    return res.status(404).send({ message: 'Sale not found' });
-  }
-  return res.status(200).json(filterSales);
+  return res.status(httpMapCode[status]).json(data);
 });
 
 module.exports = app;

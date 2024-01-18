@@ -9,9 +9,15 @@ const findProductById = async (id) => {
   const currProduct = await productsModel.findProductById(id);
 
   if (!currProduct) {
-    return 'Product not found';
+    return {
+      status: 'NOT_FOUND',
+      data: { message: 'Product not found' },
+    };
   }
-  return currProduct;
+  return {
+    status: 'SUCCESS',
+    data: currProduct,
+  };
 };
 
 module.exports = {

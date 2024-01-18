@@ -4,7 +4,7 @@ const connection = require('../../../src/models/connection');
 const {
   mockProducts, 
   mockCurrProduct, 
-} = require('../mocks/model.mock');
+} = require('../mocks/products.mock');
 const { productsModel } = require('../../../src/models');
 
 describe('Realizando testes - PRODUCTS MODEL:', function () {

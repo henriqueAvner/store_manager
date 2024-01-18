@@ -1,10 +1,13 @@
 const productsServices = require('./products.service');
+const salesServices = require('./sales.service');
 
 module.exports = {
   productsServices,
+  salesServices,
+  
 };
 
-// Acabei de implementar a camada services para PRODUCTS.
+// Acabei de implementar a camada services para PRODUCTS E SALES.
 
 // Proximos passos -> Realizar testes na camada service de products;
 // -> Fazer a camada services para SALES;
