@@ -1,4 +1,5 @@
 const productsModel = require('../models/products.model');
+const serviceResponse = require('./messages/messages');
 
 const findAllProducts = async () => {
   const allProducts = await productsModel.findAllProducts();
@@ -10,12 +11,12 @@ const findProductById = async (id) => {
 
   if (!currProduct) {
     return {
-      status: 'NOT_FOUND',
+      status: serviceResponse.NOT_FOUND,
       data: { message: 'Product not found' },
     };
   }
   return {
-    status: 'SUCCESS',
+    status: serviceResponse.SUCCESS,
     data: currProduct,
   };
 };

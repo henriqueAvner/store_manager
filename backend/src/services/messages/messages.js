@@ -1,0 +1,11 @@
+const serviceResponse = {
+  INVALID_DATA: 'INVALID_DATA',
+  CREATED: 'CREATED',
+  SUCCESS: 'SUCCESS',
+  NOT_FOUND: 'NOT_FOUND',
+  BAD_REQUEST: 'BAD_REQUEST',
+  UNPROCESSABLE_ENTITY: 'UNPROCESSABLE_ENTITY',
+  
+};
+
+module.exports = serviceResponse;
