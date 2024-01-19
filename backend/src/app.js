@@ -23,4 +23,9 @@ app.get('/sales/:id', salesController.getSalesById);
 
 app.post('/products', validNewProduct, productsController.addNewProduct);
 
+app.post(
+  '/sales', 
+  salesController.addNewSale,
+);
+
 module.exports = app;
