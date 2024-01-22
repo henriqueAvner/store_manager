@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
-const { salesModel } = require('../../../src/models');
+const { salesModel, productsModel } = require('../../../src/models');
 const { salesServices } = require('../../../src/services');
 const { mockSales, mockSaleId, saleWithoutQuantity, saleWithoutProductId, quantityWithoutValue, fullSale } = require('../mocks/sales.mock');
 const { validateQuantity, validateProductId, validateQuantityLength } = require('../../../src/middlewares/validateSale.middleware');
@@ -88,15 +88,10 @@ describe('Unit tests - SERVICE SALES', function () {
     expect(res.json).to.have.been.calledWith({ message: error });
   });
   it('Não é possível realizar uma venda única com o campo "productId" inexistente', async function () {
+    sinon.stub(productsModel, 'findProductById').resolves(null);
     sinon.stub(salesModel, 'insertNewSale').resolves(fullSale);
-    const responseData = {
-      itemsSold: [
-        {
-          quantity: 1,
-        },
-      ],
-    };
-    const responseService = await salesServices.insertSale(responseData);
+
+    const responseService = await salesServices.insertSale(fullSale.itemsSold);
 
     expect(responseService).to.be.an('object');
    

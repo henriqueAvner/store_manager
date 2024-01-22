@@ -1,4 +1,4 @@
-const { salesModel } = require('../models');
+const { salesModel, productsModel } = require('../models');
 const serviceResponse = require('./messages/messages');
 
 const findSalles = async () => {
@@ -22,14 +22,15 @@ const findSaleById = async (id) => {
 };
 
 const insertSale = async (sale) => {
-  const newSale = await salesModel.insertNewSale(sale);
-  const { itemsSold } = newSale;
+  const promisses = sale.map((item) => productsModel.findProductById(item.productId));
+  const resultPromisses = await Promise.all(promisses);
 
-  for (let i = 0; i < itemsSold.length; i += 1) {
-    if (!itemsSold[i].productId) {
+  for (let i = 0; i < resultPromisses.length; i += 1) {
+    if (!resultPromisses[i]) {
       return { status: serviceResponse.NOT_FOUND, data: { message: 'Product not found' } };
     }
   }
+  const newSale = await salesModel.insertNewSale(sale);
 
   return { status: serviceResponse.CREATED, data: newSale };
 };
