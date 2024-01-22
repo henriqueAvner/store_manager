@@ -2,7 +2,8 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { salesModel } = require('../../../src/models');
 const { salesServices } = require('../../../src/services');
-const { mockSales, mockSaleId } = require('../mocks/sales.mock');
+const { mockSales, mockSaleId, saleWithoutQuantity, saleWithoutProductId, quantityWithoutValue, fullSale } = require('../mocks/sales.mock');
+const { validateQuantity, validateProductId, validateQuantityLength } = require('../../../src/middlewares/validateSale.middleware');
 
 describe('Unit tests - SERVICE SALES', function () {
   it('Retornando todos os produtos da lista', async function () {
@@ -39,6 +40,68 @@ describe('Unit tests - SERVICE SALES', function () {
     expect(responseService[0].quantity).to.deep.equal(5);
     expect(responseService[1].quantity).to.deep.equal(10);
     expect(responseService).to.have.length(2);
+  });
+
+  it('Não é possível realizar uma venda com o campo "quantity" vazio', async function () {
+    const error = '"quantity" is required';
+    const req = { body: saleWithoutQuantity };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    const next = sinon.stub().returns();
+
+    validateQuantity(req, res, next);
+
+    expect(next).to.not.have.been.calledWith();
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith({ message: error });
+  });
+  it('Não é possível realizar uma venda com o campo "productId" vazio', async function () {
+    const error = '"productId" is required';
+    const req = { body: saleWithoutProductId };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    const next = sinon.stub().returns();
+
+    validateProductId(req, res, next);
+
+    expect(next).to.not.have.been.calledWith();
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith({ message: error });
+  });
+  it('Não é possível realizar uma venda com o campo "quantity" igual a 0', async function () {
+    const error = '"quantity" must be greater than or equal to 1';
+    const req = { body: quantityWithoutValue };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    const next = sinon.stub().returns();
+
+    validateQuantityLength(req, res, next);
+
+    expect(next).to.not.have.been.calledWith();
+    expect(res.status).to.have.been.calledWith(422);
+    expect(res.json).to.have.been.calledWith({ message: error });
+  });
+  it('Não é possível realizar uma venda única com o campo "productId" inexistente', async function () {
+    sinon.stub(salesModel, 'insertNewSale').resolves(fullSale);
+    const responseData = {
+      id: 34,
+      itemsSold: [
+        {
+          quantity: 1,
+        },
+      ],
+    };
+    const responseService = await salesServices.insertSale(responseData);
+
+    expect(responseService).to.be.an('object');
+    expect(responseService.status).to.be.equal('NOT_FOUND');
+    expect(responseService.data).to.deep.equal({ message: 'Product not found' });
   });
 
   afterEach(function () {

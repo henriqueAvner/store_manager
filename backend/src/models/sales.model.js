@@ -15,7 +15,7 @@ const findSaleById = async (saleProdutcId) => {
   const [filterSales] = await conn
     .execute(
       `SELECT date, product_id AS productId, quantity FROM sales AS s INNER JOIN 
-      sales_products AS sp ON s.id = sp.sale_id WHERE s.id = ?`, 
+      sales_products AS sp ON s.id = sp.sale_id WHERE s.id = ? ORDER BY s.date, sp.product_id`, 
       [saleProdutcId],
     );
   return filterSales;

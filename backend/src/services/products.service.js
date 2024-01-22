@@ -26,8 +26,22 @@ const insertNewProduct = async (name) => {
   return { status: 'CREATED', data: newProduct };
 };
 
+const updateProductService = async (id, name) => {
+  const validateCurrProduct = await productsModel.findProductById(id);
+  if (!validateCurrProduct) {
+    return { status: serviceResponse.NOT_FOUND, data: { message: 'Product not found' } };
+  }
+  const currProduct = await productsModel.updateProductModel(id, name);
+
+  return {
+    status: serviceResponse.SUCCESS,
+    data: currProduct,
+  };
+};
+
 module.exports = {
   findAllProducts,
   findProductById,
   insertNewProduct,
+  updateProductService,
 };

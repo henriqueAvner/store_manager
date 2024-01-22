@@ -5,6 +5,7 @@ const { productsServices } = require('../../../src/services');
 const { mockProducts,
   mockCurrProduct, 
   newProductMock } = require('../mocks/products.mock');
+const { validNewProduct } = require('../../../src/middlewares/validateNewProducts.middleware');
 
 describe('Unit tests - SERVICE PRODUCTS:', function () {
   it('Retornando todos os produtos da lista', async function () {
@@ -53,6 +54,50 @@ describe('Unit tests - SERVICE PRODUCTS:', function () {
     expect(responseService.status).to.equal('CREATED');
     expect(responseService).to.be.an('object');
     expect(responseService.data).to.deep.equal(responseNewData);
+  });
+  it('Validando os campos de produtos da lista', async function () {
+    const error = '"name" is required';
+    const req = { body: {} };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    const next = sinon.stub().returns();
+
+    await validNewProduct(req, res, next);
+    
+    expect(next).not.to.have.been.calledWith();
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith({ message: error });
+  });
+  it('Validando se o campo name possui pelo menos 5 caracteres', async function () {
+    const error = '"name" length must be at least 5 characters long';
+    const req = { body: { name: 'alo' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    const next = sinon.stub().returns();
+
+    await validNewProduct(req, res, next);
+    
+    expect(next).not.to.have.been.calledWith();
+    expect(res.status).to.have.been.calledWith(422);
+    expect(res.json).to.have.been.calledWith({ message: error });
+  });
+  it('Ao validar o campo de maneira correta, o cadastro é realizado', async function () {
+    const req = { body: { name: 'Avner' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    const next = sinon.stub().returns();
+
+    await validNewProduct(req, res, next);
+    
+    expect(next).to.have.been.calledWith();
+    expect(res.status).not.to.have.been.calledWith();
+    expect(res.json).not.to.have.been.calledWith();
   });
 
   afterEach(function () {

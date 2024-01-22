@@ -8,6 +8,7 @@ const getAllSales = async (_req, res) => {
 
 const getSalesById = async (req, res) => {
   const { id } = req.params;
+
   const { status, data } = await salesServices.findSaleById(id);
   
   return res.status(httpMapCode[status]).json(data);

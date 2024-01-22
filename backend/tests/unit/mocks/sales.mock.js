@@ -39,10 +39,50 @@ const controllerMockId = {
   data: mockSaleId,
 };
 
+const saleWithoutQuantity = [ 
+  {
+    productId: 1,     
+  },
+  {
+    productId: 2,      
+  },  
+];
+const saleWithoutProductId = [
+  { 
+    quantity: 1,
+  },
+  { 
+    quantity: 5,  
+  },
+];
+const quantityWithoutValue = [
+  {
+    productId: 4,
+    quantity: 0,
+  },
+];
+const fullSale = {
+  id: 3,
+  itemsSold: [
+    {
+      productId: 1,
+      quantity: 1,
+    },
+    {
+      productId: 2,
+      quantity: 5,
+    },
+  ],
+};
+
 module.exports = {
   mockSales,
   mockSaleId,
   controllerMock,
   controllerMockId,
+  saleWithoutQuantity,
+  saleWithoutProductId,
+  fullSale,
+  quantityWithoutValue,
   
 };

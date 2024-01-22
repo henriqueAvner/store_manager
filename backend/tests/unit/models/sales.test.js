@@ -28,6 +28,22 @@ describe(' Unit test  - SALES MODEL:', function () {
     expect(filterSales[0].quantity).to.deep.equal(5);
     expect(filterSales).to.be.deep.equal(mockSales);
   });
+  it('Adicionando uma venda de produto', async function () {
+    sinon.stub(connection, 'execute').resolves([mockSales]);
+    const inputData = [
+      {
+        productId: 2,
+        quantity: 6,
+      },
+    ];
+    const serviceResponse = await salesModel.insertNewSale(inputData);
+    
+    expect(serviceResponse).to.be.an('object');
+    expect(serviceResponse.itemsSold).to.be.an('array');
+    expect(serviceResponse.itemsSold).to.have.length(1);
+    expect(serviceResponse.itemsSold[0].quantity).to.deep.equal(6);
+    expect(serviceResponse.itemsSold[0].productId).to.deep.equal(2);
+  });
   
   afterEach(function () {
     sinon.restore();

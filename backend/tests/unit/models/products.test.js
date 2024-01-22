@@ -42,4 +42,13 @@ describe('Unit test - PRODUCTS MODEL:', function () {
   afterEach(function () {
     sinon.restore();
   });
+  it('Alterando um produto da tabela de id 2', async function () {
+    sinon.stub(connection, 'execute').resolves([mockCurrProduct]);
+
+    const updateProduct = await productsModel.updateProductModel(2, 'Capa do superman');
+    expect(updateProduct).to.be.an('object');
+    expect(updateProduct.id).to.be.an('number');
+    expect(updateProduct.name).not.to.deep.equal('Capa de invisibilidade');
+    expect(updateProduct).to.be.deep.equal({ id: 2, name: 'Capa do superman' });
+  });
 });

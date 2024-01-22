@@ -3,6 +3,9 @@ const express = require('express');
 const { productsController, salesController } = require('./controllers');
   
 const { validNewProduct } = require('./middlewares/validateNewProducts.middleware');
+const { validateQuantity,
+  validateProductId,
+  validateQuantityLength } = require('./middlewares/validateSale.middleware');
 
 const app = express();
 
@@ -24,8 +27,13 @@ app.get('/sales/:id', salesController.getSalesById);
 app.post('/products', validNewProduct, productsController.addNewProduct);
 
 app.post(
-  '/sales', 
+  '/sales',
+  validateQuantityLength,
+  validateProductId,
+  validateQuantity,
   salesController.addNewSale,
 );
+
+app.put('/products/:id', validNewProduct, productsController.updateProductController);
 
 module.exports = app;
