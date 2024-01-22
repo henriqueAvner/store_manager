@@ -65,7 +65,7 @@ const fullSale = {
   id: 3,
   itemsSold: [
     {
-      productId: 1,
+      
       quantity: 1,
     },
     {

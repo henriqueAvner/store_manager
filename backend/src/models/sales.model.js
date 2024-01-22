@@ -27,7 +27,6 @@ const insertSalesProductsData = async (currSale, saleId) => {
     const columns = getFormattedColumnNames(newSale);
     const placeholders = getFormattedPlaceholders(newSale);
     const query = `INSERT INTO sales_products (${columns}) VALUE (${placeholders});`;
-
     await conn.execute(query, [...Object.values(newSale)]);
   });
 };

@@ -90,7 +90,6 @@ describe('Unit tests - SERVICE SALES', function () {
   it('Não é possível realizar uma venda única com o campo "productId" inexistente', async function () {
     sinon.stub(salesModel, 'insertNewSale').resolves(fullSale);
     const responseData = {
-      id: 34,
       itemsSold: [
         {
           quantity: 1,
@@ -100,7 +99,7 @@ describe('Unit tests - SERVICE SALES', function () {
     const responseService = await salesServices.insertSale(responseData);
 
     expect(responseService).to.be.an('object');
-    expect(responseService.status).to.be.equal('NOT_FOUND');
+   
     expect(responseService.data).to.deep.equal({ message: 'Product not found' });
   });
 

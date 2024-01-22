@@ -27,8 +27,8 @@ app.get('/sales/:id', salesController.getSalesById);
 app.post('/products', validNewProduct, productsController.addNewProduct);
 
 app.post(
-  '/sales',
-  validateQuantityLength,
+  '/sales', 
+  validateQuantityLength, 
   validateProductId,
   validateQuantity,
   salesController.addNewSale,

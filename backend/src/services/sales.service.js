@@ -26,10 +26,11 @@ const insertSale = async (sale) => {
   const { itemsSold } = newSale;
 
   for (let i = 0; i < itemsSold.length; i += 1) {
-    if (itemsSold.length >= 1 || !itemsSold[i].productId) {
+    if (!itemsSold[i].productId) {
       return { status: serviceResponse.NOT_FOUND, data: { message: 'Product not found' } };
     }
   }
+
   return { status: serviceResponse.CREATED, data: newSale };
 };
 
