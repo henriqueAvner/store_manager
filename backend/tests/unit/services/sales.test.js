@@ -31,15 +31,17 @@ describe('Unit tests - SERVICE SALES', function () {
     expect(responseService.data).to.be.an('array');
   });
   it('Retornando um produto específico da lista', async function () {
-    sinon.stub(salesServices, 'findSaleById').resolves(mockSaleId);
+    sinon.stub(salesModel, 'findSaleById').resolves(mockSaleId);
    
     const inputData = 1;
-    const responseService = await salesModel.findSaleById(inputData);
+    const responseService = await salesServices.findSaleById(inputData);
     
-    expect(responseService).to.be.an('array');
-    expect(responseService[0].quantity).to.deep.equal(5);
-    expect(responseService[1].quantity).to.deep.equal(10);
-    expect(responseService).to.have.length(2);
+    expect(responseService).to.be.an('object');
+    
+    expect(responseService.status).to.deep.equal('SUCCESS');
+    expect(responseService.data[0].quantity).to.deep.equal(5);
+    expect(responseService.data[0].productId).to.deep.equal(1);
+    expect(responseService.data[0].date).to.deep.equal('2024-01-18T02:35:00.000Z');
   });
 
   it('Não é possível realizar uma venda com o campo "quantity" vazio', async function () {

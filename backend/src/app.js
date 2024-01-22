@@ -36,4 +36,6 @@ app.post(
 
 app.put('/products/:id', validNewProduct, productsController.updateProductController);
 
+app.delete('/products/:id', productsController.deleteProductController);
+
 module.exports = app;
