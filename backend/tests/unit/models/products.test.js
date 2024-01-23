@@ -39,9 +39,7 @@ describe('Unit test - PRODUCTS MODEL:', function () {
     expect(newProduct).to.be.an('object');
     expect(newProduct).to.deep.equal(newProductMock);
   });
-  afterEach(function () {
-    sinon.restore();
-  });
+  
   it('Alterando um produto da tabela de id 2', async function () {
     sinon.stub(connection, 'execute').resolves([mockCurrProduct]);
 
@@ -50,5 +48,22 @@ describe('Unit test - PRODUCTS MODEL:', function () {
     expect(updateProduct.id).to.be.an('number');
     expect(updateProduct.name).not.to.deep.equal('Capa de invisibilidade');
     expect(updateProduct).to.be.deep.equal({ id: 2, name: 'Capa do superman' });
+  });
+
+  it('Realizando teste na função procurar um Produto', async function () {
+    sinon.stub(connection, 'execute').resolves([{
+      id: 1,
+      name: 'Martelo de Thor',
+    }]);
+
+    const searchTerm = 'martelo';
+
+    const response = await productsModel.findQProducts(searchTerm);
+
+    expect(response).to.be.deep.equal({ id: 1, name: 'Martelo de Thor' });
+  });
+
+  afterEach(function () {
+    sinon.restore();
   });
 });

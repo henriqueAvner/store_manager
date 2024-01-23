@@ -28,6 +28,7 @@ const insertNewProduct = async (name) => {
 
 const updateProductService = async (id, name) => {
   const validateCurrProduct = await productsModel.findProductById(id);
+  
   if (!validateCurrProduct) {
     return { status: serviceResponse.NOT_FOUND, data: { message: 'Product not found' } };
   }

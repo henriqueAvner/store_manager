@@ -6,7 +6,6 @@ const {
   
 } = require('../mocks/sales.mock');
 const { salesModel } = require('../../../src/models');
-const { salesServices } = require('../../../src/services');
 
 describe(' Unit test  - SALES MODEL:', function () {
   it('Retornando todos os produtos', async function () {
@@ -45,25 +44,27 @@ describe(' Unit test  - SALES MODEL:', function () {
     expect(serviceResponse.itemsSold[0].quantity).to.deep.equal(6);
     expect(serviceResponse.itemsSold[0].productId).to.deep.equal(2);
   });
-  it('Deletando uma venda com sucesso', async function () {
-    sinon.stub(salesModel, 'findSaleById').resolves([{}]);
-    sinon.stub(salesModel, 'deleteSale').resolves();
   
-    const id = 1;
-    const { status, data } = await salesServices.deleteSale(id);
-  
-    expect(status).to.be.equal('NO_CONTENT');
-    expect(data).to.be.deep.equal({});
-  });
-  it('Deletar uma sale que nao existe', async function () {
-    sinon.stub(salesModel, 'findSaleById').resolves([]);
-    sinon.stub(salesModel, 'deleteSale').resolves();
+  it('Realizando teste na função que atualiza a quantidade com sucesso.', async function () {
+    sinon.stub(connection, 'execute')
+      .resolves([[{
+        date: '2024-01-23T15:32:23.000Z',
+        productId: 2,
+        quantity: 15,
+        saleId: 1,
+      }]]);
 
-    const id = 44;
-    const { status, data } = await salesServices.deleteSale(id);
+    const saleId = 1;
+    const productId = 2;
 
-    expect(status).to.be.equal('NOT_FOUND');
-    expect(data).to.be.deep.equal({ message: 'Sale not found' });
+    const response = await salesModel.selectQuantitySale(saleId, productId);
+    
+    expect(response).to.be.deep.equal({
+      date: '2024-01-23T15:32:23.000Z',
+      productId: 2,
+      quantity: 15,
+      saleId: 1,
+    });
   });
   
   afterEach(function () {

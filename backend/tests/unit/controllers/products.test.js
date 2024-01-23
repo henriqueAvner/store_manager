@@ -64,6 +64,35 @@ describe('Unit test - PRODUCTS CONTROLLER:', function () {
     expect(res.status).to.have.been.calledWith(201);
     expect(res.json).to.have.been.calledWith(newProductMock);
   });
+  it('Testando a função de procurar um produto, com um termo especifico, com sucesso.', async function () {
+    sinon.stub(productsServices, 'findQueryProducts').resolves({
+      status: 'SUCCESSFUL',
+      data: [{
+        id: 1,
+        name: 'Martelo de Thor',
+      }],
+    });
+
+    const req = {
+      query: {
+        q: 'martelo',
+      },
+    };
+
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.findProductByQuery(req, res);
+
+    expect(res.status).to.have.been.calledWith();
+    expect(res.json).to.have.been.deep.calledWith([
+      {
+        id: 1,
+        name: 'Martelo de Thor',
+      }]);
+  });
   afterEach(function () {
     sinon.restore();
   });

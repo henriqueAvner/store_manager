@@ -118,6 +118,21 @@ describe('Unit tests - SERVICE PRODUCTS:', function () {
     expect(responseService.data).to.deep.equal({});
   });
 
+  it('Testando a função procurar um produtos, com sucesso.', async function () {
+    sinon.stub(productsModel, 'findQProducts').resolves([{ 
+      id: 1, name: 'Bat-Leite', 
+    }]);
+
+    const searchTerm = 'martelo';
+
+    const response = await productsServices.findQueryProducts(searchTerm);
+
+    expect(response.status).to.equal('SUCCESS');
+    expect(response.data).to.deep.equal([{ 
+      id: 1, name: 'Bat-Leite', 
+    }]);
+  });
+
   afterEach(function () {
     sinon.restore();
   });
