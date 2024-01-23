@@ -35,11 +35,19 @@ const deleteProductController = async (req, res) => {
   return res.status(httpMapCode[status]).json(data);
 };
 
+const findProductByQuery = async (req, res) => {
+  const searchProduct = req.query.q;
+  const { status, data } = await productsServices.findQueryProducts(searchProduct);
+ 
+  return res.status(httpMapCode[status]).json(data);
+};
+
 module.exports = {
   getAllProducts,
   getProductsById,
   addNewProduct,
   updateProductController,
   deleteProductController,
+  findProductByQuery,
     
 };

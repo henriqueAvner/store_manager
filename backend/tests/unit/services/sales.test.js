@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { salesModel, productsModel } = require('../../../src/models');
 const { salesServices } = require('../../../src/services');
-const { mockSales, mockSaleId, saleWithoutQuantity, saleWithoutProductId, quantityWithoutValue, fullSale } = require('../mocks/sales.mock');
+const { mockSales, mockSaleId, saleWithoutQuantity, saleWithoutProductId, quantityWithoutValue, fullSale, fullSaleWithoutQuantity, correctSale } = require('../mocks/sales.mock');
 const { validateQuantity, validateProductId, validateQuantityLength } = require('../../../src/middlewares/validateSale.middleware');
 
 describe('Unit tests - SERVICE SALES', function () {
@@ -89,15 +89,36 @@ describe('Unit tests - SERVICE SALES', function () {
     expect(res.status).to.have.been.calledWith(422);
     expect(res.json).to.have.been.calledWith({ message: error });
   });
-  it('Não é possível realizar uma venda única com o campo "productId" inexistente', async function () {
+  it('Não é possível realizar uma venda com o campo "productId" inexistente', async function () {
     sinon.stub(productsModel, 'findProductById').resolves(null);
     sinon.stub(salesModel, 'insertNewSale').resolves(fullSale);
 
     const responseService = await salesServices.insertSale(fullSale.itemsSold);
 
     expect(responseService).to.be.an('object');
-   
+    expect(responseService.status).to.deep.equal('NOT_FOUND');
     expect(responseService.data).to.deep.equal({ message: 'Product not found' });
+  });
+  it('Não é possível realizar uma venda com o campo "quantity" inexistente', async function () {
+    sinon.stub(productsModel, 'findProductById').resolves(null);
+    sinon.stub(salesModel, 'insertNewSale').resolves(fullSaleWithoutQuantity);
+
+    const responseService = await salesServices.insertSale(fullSaleWithoutQuantity.itemsSold);
+
+    expect(responseService).to.be.an('object');
+    expect(responseService.status).to.deep.equal('NOT_FOUND');
+    expect(responseService.data).to.deep.equal({ message: 'Product not found' });
+  });
+  it('É possível realizar uma venda com sucesso', async function () {
+    sinon.stub(productsModel, 'findProductById').resolves(correctSale);
+    sinon.stub(salesModel, 'insertNewSale').resolves(correctSale);
+
+    const responseService = await salesServices.insertSale(correctSale.itemsSold);
+
+    expect(responseService).to.be.an('object');
+    expect(responseService.status).to.deep.equal('CREATED');
+    expect(responseService.data.itemsSold).to.be.an('array');
+    expect(responseService.data.itemsSold[0]).to.deep.equal({ productId: 3, quantity: 1 });
   });
 
   afterEach(function () {

@@ -99,6 +99,24 @@ describe('Unit tests - SERVICE PRODUCTS:', function () {
     expect(res.status).not.to.have.been.calledWith();
     expect(res.json).not.to.have.been.calledWith();
   });
+  it('Testando se, ao digitar um id desconhecido, o produto não é encontrado', async function () {
+    sinon.stub(productsModel, 'deleteProductModel').resolves([]);
+
+    const inputData = 4545;
+
+    const responseService = await productsServices.deleteProductService(inputData);
+    expect(responseService.status).to.deep.equal('NOT_FOUND');
+    expect(responseService.data).to.deep.equal({ message: 'Product not found' });
+  });
+  it('Testando se um produto é deletado com sucesso', async function () {
+    sinon.stub(productsModel, 'deleteProductModel').resolves([{}]);
+    const inputData = 1;
+    
+    const responseService = await productsServices.deleteProductService(inputData);
+    
+    expect(responseService.status).to.deep.equal('NO_CONTENT');
+    expect(responseService.data).to.deep.equal({});
+  });
 
   afterEach(function () {
     sinon.restore();

@@ -50,10 +50,17 @@ const deleteProductService = async (id) => {
   return { status: serviceResponse.NO_CONTENT, data: {} };
 };
 
+const findQueryProducts = async (q) => {
+  const products = await productsModel.findQProducts(q);
+
+  return { status: serviceResponse.SUCCESS, data: products };
+};
+
 module.exports = {
   findAllProducts,
   findProductById,
   insertNewProduct,
   updateProductService,
   deleteProductService,
+  findQueryProducts,
 };

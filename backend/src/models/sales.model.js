@@ -37,9 +37,13 @@ const insertNewSale = async (newSale) => {
   return { id: insertId, itemsSold: newSale };
 };
 
+const deleteSale = async (saleId) => {
+  await conn.execute('DELETE FROM sales WHERE id = ?', [saleId]);
+};
+
 module.exports = {
   findAllSales,
   findSaleById,
   insertNewSale,
-    
+  deleteSale,
 };

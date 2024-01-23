@@ -18,6 +18,8 @@ app.get('/', (_request, response) => {
 
 app.get('/products', productsController.getAllProducts);
 
+app.get('/products/search', productsController.findProductByQuery);
+
 app.get('/products/:id', productsController.getProductsById);
 
 app.get('/sales', salesController.getAllSales);
@@ -37,5 +39,7 @@ app.post(
 app.put('/products/:id', validNewProduct, productsController.updateProductController);
 
 app.delete('/products/:id', productsController.deleteProductController);
+
+app.delete('/sales/:id', salesController.deleteCurrSale);
 
 module.exports = app;

@@ -35,9 +35,22 @@ const insertSale = async (sale) => {
   return { status: serviceResponse.CREATED, data: newSale };
 };
 
+const deleteSale = async (saleId) => {
+  const [currSale] = await salesModel.findSaleById(saleId);
+
+  if (!currSale) {
+    return { status: serviceResponse.NOT_FOUND, data: { message: 'Sale not found' } };
+  }
+
+  await salesModel.deleteSale(saleId);
+
+  return { status: serviceResponse.NO_CONTENT, data: {} };
+};
+
 module.exports = {
   findSalles,
   findSaleById,
   insertSale,
+  deleteSale,
     
 };

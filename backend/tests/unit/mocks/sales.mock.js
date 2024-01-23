@@ -74,6 +74,32 @@ const fullSale = {
     },
   ],
 };
+const correctSale = {
+  id: 2,
+  itemsSold: [
+    {
+      productId: 3,
+      quantity: 1,
+    },
+    {
+      productId: 2,
+      quantity: 5,
+    },
+  ],
+};
+const fullSaleWithoutQuantity = {
+  id: 4,
+  itemsSold: [
+    {
+      productId: 8,
+      quantity: 1,
+    },
+    {
+      productId: 2,
+      
+    },
+  ],
+};
 
 module.exports = {
   mockSales,
@@ -84,5 +110,7 @@ module.exports = {
   saleWithoutProductId,
   fullSale,
   quantityWithoutValue,
+  fullSaleWithoutQuantity,
+  correctSale,
   
 };
