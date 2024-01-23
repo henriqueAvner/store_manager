@@ -9,6 +9,23 @@ const validateQuantity = (req, res, next) => {
   next();
 };
 
+const validateQuantityObject = (req, res, next) => {
+  const { quantity } = req.body;
+
+  if (quantity === undefined) {
+    return res.status(400).json({ message: '"quantity" is required' });
+  }
+
+  next();
+};
+const validateQuantityObjLength = (req, res, next) => {
+  const { quantity } = req.body;
+  if (quantity <= 0) {
+    return res.status(422).json({ message: '"quantity" must be greater than or equal to 1' });
+  }
+  next();
+};
+
 const validateProductId = (req, res, next) => {
   const itemsSold = req.body;
   for (let i = 0; i < itemsSold.length; i += 1) {
@@ -35,5 +52,7 @@ module.exports = {
   validateQuantity,
   validateProductId,
   validateQuantityLength,
+  validateQuantityObject,
+  validateQuantityObjLength,
 
 };

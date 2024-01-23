@@ -47,10 +47,29 @@ const deleteSale = async (saleId) => {
   return { status: serviceResponse.NO_CONTENT, data: {} };
 };
 
+const updateQuantity = async (saleId, productId, quantity) => {
+  const currSale = await salesModel.findSaleById(saleId);
+  if (currSale.length === 0) {
+    return { status: serviceResponse.NOT_FOUND, data: { message: 'Sale not found' } };
+  }
+  
+  const validateSale = currSale.some((sale) => Number(sale.productId) === Number(productId));
+
+  if (!validateSale) {
+    return { status: serviceResponse.NOT_FOUND, data: { message: 'Product not found in sale' } };
+  }
+
+  await salesModel.updateQuantitySale(saleId, productId, quantity);
+  const finalUpSale = await salesModel.selectQuantitySale(saleId, productId);
+
+  return { status: serviceResponse.SUCCESS, data: finalUpSale };
+};
+
 module.exports = {
   findSalles,
   findSaleById,
   insertSale,
   deleteSale,
+  updateQuantity,
     
 };

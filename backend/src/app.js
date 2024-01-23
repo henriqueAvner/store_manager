@@ -5,7 +5,9 @@ const { productsController, salesController } = require('./controllers');
 const { validNewProduct } = require('./middlewares/validateNewProducts.middleware');
 const { validateQuantity,
   validateProductId,
-  validateQuantityLength } = require('./middlewares/validateSale.middleware');
+  validateQuantityLength,
+  validateQuantityObject,
+  validateQuantityObjLength } = require('./middlewares/validateSale.middleware');
 
 const app = express();
 
@@ -37,6 +39,13 @@ app.post(
 );
 
 app.put('/products/:id', validNewProduct, productsController.updateProductController);
+
+app.put(
+  '/sales/:saleId/products/:productId/quantity', 
+  validateQuantityObject,
+  validateQuantityObjLength,
+  salesController.updateQuantityInSale,
+);
 
 app.delete('/products/:id', productsController.deleteProductController);
 

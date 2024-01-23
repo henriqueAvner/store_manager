@@ -42,4 +42,5 @@ module.exports = {
   updateProductModel,
   deleteProductModel,
   findQProducts,
+
 };
