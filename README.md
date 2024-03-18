@@ -1,5 +1,12 @@
 # Store Manager :briefcase:
 
+![image](https://github.com/henriqueAvner/store_manager/assets/133919307/707dfd14-f59d-439c-a388-ee17cc97bd0e)
+![image](https://github.com/henriqueAvner/store_manager/assets/133919307/849c67b3-7cb7-4535-a01f-e37ddd4d58a9)
+
+
+
+
+
 ## Sobre o projeto:
  
 <details>
